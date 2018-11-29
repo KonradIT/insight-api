@@ -6,18 +6,19 @@
 
 import argparse
 
-from InSight import InSightAPI
-
+from insightmars import InSightAPI, utils
 InSightMission = InSightAPI()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--number", "-n",type=int)
-parser.add_argument('--output', "-o")
+parser.add_argument("--number", "-n",type=int, help='Number of images to download', required=True)
+parser.add_argument('--output', "-o", help='Output directory', required=True)
+parser.add_argument('--sort', "-s", help='Sort by: sol / sequential', type=str)
 args = parser.parse_args()
 
 json_request = InSightMission.make_request()
 all_images = InSightMission.get_count(json_request)
-print(all_images)
-print(args.number)
+print("InSight Photo Downloader")
+print("Number of images available: %d" % all_images)
+print("Number of images to download: %d" % args.number)
 images = InSightMission.get_images(json_request, args.number)
-InSightMission.download_image(images, args.output)
+utils.download_image(images, args.output, args.sort)

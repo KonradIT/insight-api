@@ -3,6 +3,7 @@
 
 import json
 import requests
+import os
 
 class InSightAPI:
 
@@ -33,9 +34,9 @@ class InSightAPI:
 	# n_images (integer) = number of images to download
 	def get_images(self, data, n_images):
 		images = []
-		n_images -= 1
+		n_images = n_images - 1
 		for index, image in enumerate(data["items"]):
-			if int(index) >= n_images:			
+			if int(index) <= n_images:		
 				images.append(image["url"])
 
 		return images
@@ -77,12 +78,4 @@ class InSightAPI:
 	# data (string) = json data from make_request()
 	def get_more(self, data):
 		return data["more"]
-	
-	
-	### Utils:
-	def download_image(self, array, out="images"):
-		for image in array:
-			r = requests.get(image, allow_redirects=True)
-			filename = image.rsplit('/', 1)[1]
-			open(out + "/" + filename, "wb").write(r.content)
 
