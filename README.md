@@ -6,6 +6,15 @@ Python library to access the raw images and metadata from the InSight Mars missi
 
 Images are from nasa.gov
 
+### Args:
+
+	InSightAPI(order="desc", per_page="100", af="idc")
+
+- per_page = 25 / 50 / 100
+- af (camera) = idc / icc
+	- idc = Instrument Deployment Camera
+	- icc = Instrument Context Camera
+
 ### Usage:
 
 	from insight import InSightAPI, utils
@@ -37,6 +46,6 @@ Images are from nasa.gov
 	
 ### Examples:
 
-insight_get_images.py
+- [insight_get_images.py](/insight_get_images.py)
 
-insight_make_gif.py
+- [insight_make_gif.py](/insight_get_images.py)
