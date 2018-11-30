@@ -6,6 +6,9 @@
 
 import argparse
 import subprocess
+import os
+import signal
+import time
 
 from insightmars import InSightAPI, utils
 
@@ -22,4 +25,5 @@ utils.download_image(images, "images/", "sequential")
 scale = ""
 if not args.size == None:
 	scale = "-vf scale=" + args.size
-subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, shell=True)
+process = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid)
+

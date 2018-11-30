@@ -26,7 +26,7 @@ class InSightAPI:
 			"Cookie": "has_mouse=yes; raw_images_filter=order=sol+desc%2Cdate_taken+desc&per_page=100&page=" + str(page_num) + "&mission=insight&af=" + self.af + ";" +  "resources_gl_insight_multimedia_webcasts=page=0&per_page=25&order=pub_date+desc&search=&category=240%3A183&url_suffix=%3Fsite%3Dinsight; resources_gl_insight_multimedia_images=page=0&per_page=25&order=pub_date+desc&search=&category=51%3A183&fancybox=true&url_suffix=%3Fsite%3Dinsight",
 			"TE": "Trailers"
 		}
-		response = requests.get(self.JSON_API.replace("PAGENUM",str(page_num)), headers=headers)
+		response = requests.get(self.JSON_API, headers=headers)
 		return response.json()
 		
 	# get_images(data, images)
@@ -54,9 +54,9 @@ class InSightAPI:
 	# n_images (integer) = number of images to download
 	def get_images_metadata(self, data, n_images):
 		images = []
-		n_images -= 1
+		n_images = n_images - 1
 		for index, image in enumerate(data["items"]):
-			if int(index) >= n_images:			
+			if int(index) <= n_images:			
 				images.append(image)
 
 		return images
@@ -78,4 +78,29 @@ class InSightAPI:
 	# data (string) = json data from make_request()
 	def get_more(self, data):
 		return data["more"]
+		
+	# get_sol(data, sol)
+	# data (string) = json data from make_request()
+	# sol (integer) = specific sol
+	def get_sol(self, data, sol):
+		images=[]
+		array = self.get_images_metadata(data, self.get_count(data))
+		for datapoint in array:
+			if datapoint["sol"] == sol:
+				images.append(datapoint["url"])
+		return images
+		
+	# get_sol(data, sol)
+	# data (string) = json data from make_request()
+	# start_sol (integer) = start sol
+	# end_sol (integer) = end sol
+	def get_sols(self, data, start_sol, end_sol):
+		images=[]
+		array = self.get_images_metadata(data, self.get_count(data))
+		for datapoint in array:
+			if datapoint["sol"] >= start_sol and datapoint["sol"] <= end_sol:
+				images.append(datapoint["url"])
+		return images
 
+	def get_latest(self, data):
+		return self.get_images(data, 1)

@@ -1,5 +1,7 @@
 ## NASA InSight Mars Raw Image API
 
+[![PyPI version](https://badge.fury.io/py/insight-api.svg)](https://badge.fury.io/py/insight-api)
+
 ![](/header.gif)
 
 Python library to access the raw images and metadata from the InSight Mars mission
@@ -17,7 +19,7 @@ Images are from nasa.gov
 
 ### Usage:
 
-	from insight import InSightAPI, utils
+	from insightmars import InSightAPI, utils
 	InSightMission = InSightAPI()
 	
 	# Make initial request
@@ -38,10 +40,13 @@ Images are from nasa.gov
 	# Get all images available:
 	images = InSightMission.get_all(json_request)
 	
-### To-do:
-
+	# Download images:
+	utils.download_image(images, "images/", "sequential")
+	
+	# Get specific sol
 	get_sol(data, sol)
 	
+	# Get sols
 	get_sols(data, start_sol, end_sol)
 	
 ### Examples:
@@ -49,3 +54,5 @@ Images are from nasa.gov
 - [insight_get_images.py](/insight_get_images.py)
 
 - [insight_make_gif.py](/insight_get_images.py)
+
+- [insight_latest_image.py](/insight_latest_image.py)
