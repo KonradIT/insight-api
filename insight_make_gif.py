@@ -25,5 +25,5 @@ utils.download_image(images, "images/", "sequential")
 scale = ""
 if not args.size == None:
 	scale = "-vf scale=" + args.size
-process = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid)
-
+p = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, shell=True)
+out, err = p.communicate()
