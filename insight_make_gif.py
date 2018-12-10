@@ -9,6 +9,7 @@ import subprocess
 import os
 import signal
 import time
+import shutil
 
 from insightmars import InSightAPI, utils
 
@@ -21,9 +22,13 @@ args = parser.parse_args()
 InSightMission = InSightAPI(af=args.camera)
 json_request = InSightMission.make_request()
 images = InSightMission.get_all(json_request)
+if os.path.exists("images"):
+	shutil.rmtree("images")
 utils.download_image(images, "images/", "sequential")
 scale = ""
 if not args.size == None:
 	scale = "-vf scale=" + args.size
 p = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, shell=True)
 out, err = p.communicate()
+
+

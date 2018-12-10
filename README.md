@@ -56,3 +56,7 @@ Images are from nasa.gov
 - [insight_make_gif.py](/insight_get_images.py)
 
 - [insight_latest_image.py](/insight_latest_image.py)
+
+- [insight_make_gif_metadata.py](/insight_make_gif_metadata.py)
+
+- [make_graph.py](/make_graph.py)

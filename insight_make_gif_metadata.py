@@ -9,7 +9,7 @@ import subprocess
 import os
 import signal
 import time
-
+import shutil
 from insightmars import InSightAPI, utils
 
 parser = argparse.ArgumentParser()
@@ -25,13 +25,15 @@ metadata_images = InSightMission.get_images_metadata(json_request, InSightMissio
 images = []
 metadata = []
 filenames = []
-for i in metadata_images:
-	images.append(i["url"])
-	metadata.append(i["title"])
-	filenames.append("images/" + i["imageid"] + ".PNG")
+for index, image in enumerate(metadata_images):
+	images.append(image["url"])
+	metadata.append(image["title"])
+	filenames.append("images/IMG_" + str(index) + ".png")
 
-
-utils.download_image(images, "images/")
+metadata.reverse()
+if os.path.exists("images"):
+	shutil.rmtree("images")
+utils.download_image(images, "images/", order="sequential")
 for index, i in enumerate(filenames):
 	cmd = ["convert",i,"-pointsize",args.textsize,"-fill","white","-undercolor","'#00000080'","-gravity","South","-annotate","+0+5",metadata[index],i]	
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -40,5 +42,7 @@ for index, i in enumerate(filenames):
 scale = ""
 if not args.size == None:
 	scale = "-vf scale=" + args.size
-p = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/%*.PNG " + scale + " " + args.output, shell=True)
+p = subprocess.Popen("ffmpeg -y -f image2 -framerate " + args.fps + " -i images/IMG_%d.png " + scale + " " + args.output, shell=True)
 out, err = p.communicate()
+
+#shutil.rmtree("images")
