@@ -18,12 +18,24 @@ parser.add_argument('--fps', "-f", help='GIF speed', required=True)
 parser.add_argument('--output', "-o", help='Output gif name', required=True)
 parser.add_argument('--size', "-s", help='Output gif size (WxH)')
 parser.add_argument('--camera', "-c", help='Camera: icc / idc', default="idc")
+parser.add_argument('--sol', "-d", help='Sol (00 / 00 - 01)', default="all")
 args = parser.parse_args()
-InSightMission = InSightAPI(af=args.camera)
+InSightMission = InSightAPI(af=args.camera, per_page="400")
 json_request = InSightMission.make_request()
-images = InSightMission.get_all(json_request)
+
+images = []	
+if args.sol == "all":
+	images = InSightMission.get_all(json_request)
+elif "-" in args.sol:
+	start_sol = int(args.sol.split(" - ")[0])
+	end_sol = int(args.sol.split(" - ")[1])
+	images = InSightMission.get_sols(json_request, start_sol, end_sol)
+else:
+	images = InSightMission.get_sol(json_request, int(args.sol))
+
 if os.path.exists("images"):
 	shutil.rmtree("images")
+
 utils.download_image(images, "images/", "sequential")
 scale = ""
 if not args.size == None:

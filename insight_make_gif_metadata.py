@@ -19,7 +19,7 @@ parser.add_argument('--size', "-s", help='Output gif size (WxH)')
 parser.add_argument('--camera', "-c", help='Camera: icc / idc', default="idc")
 parser.add_argument('--textsize', "-t", help='Text size: default 40', default="40")
 args = parser.parse_args()
-InSightMission = InSightAPI(af=args.camera)
+InSightMission = InSightAPI(af=args.camera, per_page="400")
 json_request = InSightMission.make_request()
 metadata_images = InSightMission.get_images_metadata(json_request, InSightMission.get_count(json_request))
 images = []

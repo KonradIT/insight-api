@@ -26,7 +26,7 @@ class InSightAPI:
 			"Cookie": "has_mouse=yes; raw_images_filter=order=sol+desc%2Cdate_taken+desc&per_page=100&page=" + str(page_num) + "&mission=insight&af=" + self.af + ";" +  "resources_gl_insight_multimedia_webcasts=page=0&per_page=25&order=pub_date+desc&search=&category=240%3A183&url_suffix=%3Fsite%3Dinsight; resources_gl_insight_multimedia_images=page=0&per_page=25&order=pub_date+desc&search=&category=51%3A183&fancybox=true&url_suffix=%3Fsite%3Dinsight",
 			"TE": "Trailers"
 		}
-		response = requests.get(self.JSON_API, headers=headers)
+		response = requests.get(self.JSON_API.replace("PAGENUM",str(page_num)), headers=headers)
 		return response.json()
 		
 	# get_images(data, images)

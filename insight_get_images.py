@@ -7,7 +7,7 @@
 import argparse
 
 from insightmars import InSightAPI, utils
-InSightMission = InSightAPI()
+InSightMission = InSightAPI(per_page="400")
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--number", "-n",type=int, help='Number of images to download', required=True)
